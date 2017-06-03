@@ -50,7 +50,7 @@ const Calendar = data => {
   let lastDateDay = lastDate.getDay();
 
   let dates = [];
-  let dateFrom = firstDateDay === 1 ? firstDateDay : firstDateDay - 7;
+  let dateFrom = firstDateDay === 1 ? firstDateDay : firstDateDay - 7 + 1;
   let dateTo = lastDate.getDate() + (8 - lastDateDay % 7);
 
   let week = [];
