@@ -1,3 +1,6 @@
+/******************************
+ * Ваша реализация компонента
+ *****************************/
 const days = [
   'Воскресенье',
   'Понедельник',
@@ -38,43 +41,57 @@ const monthsRelative = [
   'Декабря',
 ];
 
-const Calendar = data => {
-  let {date} = data;
+/**
+ * `data` лучше для компонентов называть `props`.
+ * Это устоявшаяся терминология, читатель твоего кода сразу поймёт, что ты здесь имеешь ввизу.
+ * Это касается всех твоих компонентов.
+ *
+ * В решении баг: как минимум июль сего года рисуется неверно. https://yadi.sk/i/OG1VBmDX3JrXWs
+ */
+const Calendar = props => {
+  const {date} = props;
 
-  let year = date.getFullYear();
-  let month = date.getMonth();
-  let firstDate = new Date(year, month, 1);
-  let lastDate = new Date(year, month + 1, 0);
+  /**
+   * Что кроме `let` мы используем, когда наши переменные не будут изменяться?
+   */
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const firstDate = new Date(year, month, 1);
+  const lastDate = new Date(year, month + 1, 0);
 
-  let firstDateDay = firstDate.getDay();
-  let lastDateDay = lastDate.getDay();
+  const firstDateDay = firstDate.getDay();
+  const lastDateDay = lastDate.getDay();
 
-  let dates = [];
-  let dateFrom = firstDateDay === 1 ? firstDateDay : firstDateDay - 7 + 1;
-  let dateTo = lastDate.getDate() + (8 - lastDateDay % 7);
+  const dates = [];
+  const dateFrom = firstDateDay === 0 ? -5 : 2 - firstDateDay;
+  const dateTo = lastDateDay === 0 ? lastDate.getDate() + 1: lastDate.getDate() + 7 - lastDateDay + 1;
 
   let week = [];
-  for (let i = dateFrom, j = 1; i < dateTo; i++) {
-    let tempDate = {
+  for (let i = dateFrom, j = 1; i < dateTo; i++, j++) {
+    const tempDate = {
       date: (new Date(year, month, i)).getDate(),
       classNames: ''
     };
 
-    if (i <= 0 || i > lastDate.getDate())
+    /**
+     * Крайне желательным даже в однострочных `if`-условиях является использование фигурных скобок.
+     * Так куда проще читать код.
+     */
+    if (i <= 0 || i > lastDate.getDate()) {
       tempDate.classNames += ` ui-datepicker-other-month`;
-    if (i === date.getDate())
+    }
+    if (i === date.getDate()) {
       tempDate.classNames += ` ui-datepicker-today`;
+    }
 
     week.push(tempDate);
-
     if (j === 7) {
       dates.push(week);
       week = [];
-      j = 1;
-    } else {
-      j++;
+      j = 0;
     }
   }
+  dates.push(week);
 
   return (
     <div className="ui-datepicker">
@@ -91,12 +108,12 @@ const Calendar = data => {
           <span className="ui-datepicker-month">{months[date.getMonth()]}</span>&nbsp;<span className="ui-datepicker-year">{date.getFullYear()}</span>
         </div>
       </div>
-      <Dates dates={dates}></Dates>
+      <Dates dates={dates} />
     </div>
   );
 };
 
-const Dates = data => (
+const Dates = props => (
   <table className="ui-datepicker-calendar">
     <colgroup>
       <col />
@@ -119,21 +136,36 @@ const Dates = data => (
     </tr>
     </thead>
     <tbody>
-    {data.dates.map(week => (
-      <Week dates={week}></Week>
-    ))}
+    {
+      /**
+       * Если ты ничего не помещаешь вовнутрь элемента, то его лучше сделать, что называется, self-closing.
+       * Это касается не только `Week`, но и остальных компонентов.
+       */
+      props.dates.map(week => (
+        <Week dates={week} />
+      ))}
     </tbody>
   </table>
 );
 
-const Week = data => (
+const Week = props => (
   <tr>
-    {data.dates.map(value => (
-      <Day classNames={value.classNames} val={value.date}></Day>
+    {props.dates.map(value => (
+      <Day classNames={value.classNames} val={value.date} />
     ))}
   </tr>
 );
 
-const Day = data => (
-  <td className={data.classNames}>{data.val}</td>
+const Day = props => (
+  <td className={props.classNames}>{props.val}</td>
+);
+
+/******************************
+ * Не вносить изменния ниже
+ ******************************/
+const now = new Date(2017, 6, 5);
+
+ReactDOM.render(
+  <Calendar date={now} />,
+  document.getElementById('root')
 );
