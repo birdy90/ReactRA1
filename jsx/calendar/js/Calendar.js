@@ -2,58 +2,35 @@
  * Ваша реализация компонента
  *****************************/
 const days = [
-  'Воскресенье',
-  'Понедельник',
-  'Вторник',
-  'Среда',
-  'Четверг',
-  'Пятница',
-  'Суббота',
+  {full: 'Воскресенье', short: 'Вс'},
+  {full: 'Понедельник', short: 'Пн'},
+  {full: 'Вторник', short: 'Вт'},
+  {full: 'Среда', short: 'Ср'},
+  {full: 'Четверг', short: 'Чт'},
+  {full: 'Пятница', short: 'Пт'},
+  {full: 'Суббота', short: 'Сб'},
 ];
 
 const months = [
-  'Январь',
-  'Февраль',
-  'Март',
-  'Апрель',
-  'Май',
-  'Июнь',
-  'Июль',
-  'Август',
-  'Сентябрь',
-  'Октябрь',
-  'Ноябрь',
-  'Декабрь',
+  {normal: 'Январь', relative: 'Января'},
+  {normal: 'Февраль', relative: 'Февраля'},
+  {normal: 'Март', relative: 'Марта'},
+  {normal: 'Апрель', relative: 'Апреля'},
+  {normal: 'Май', relative: 'Мая'},
+  {normal: 'Июнь', relative: 'Июня'},
+  {normal: 'Июль', relative: 'Июля'},
+  {normal: 'Август', relative: 'Августа'},
+  {normal: 'Сентябрь', relative: 'Сентября'},
+  {normal: 'Октябрь', relative: 'Октября'},
+  {normal: 'Ноябрь', relative: 'Ноября'},
+  {normal: 'Декабрь', relative: 'Декабря'},
 ];
 
-const monthsRelative = [
-  'Января',
-  'Февраля',
-  'Марта',
-  'Апреля',
-  'Мая',
-  'Июня',
-  'Июля',
-  'Августа',
-  'Сентября',
-  'Октября',
-  'Ноября',
-  'Декабря',
-];
+const ColGroupClasses = ['', '', '', '', '', 'ui-datepicker-week-end', 'ui-datepicker-week-end'];
 
-/**
- * `data` лучше для компонентов называть `props`.
- * Это устоявшаяся терминология, читатель твоего кода сразу поймёт, что ты здесь имеешь ввизу.
- * Это касается всех твоих компонентов.
- *
- * В решении баг: как минимум июль сего года рисуется неверно. https://yadi.sk/i/OG1VBmDX3JrXWs
- */
 const Calendar = props => {
   const {date} = props;
 
-  /**
-   * Что кроме `let` мы используем, когда наши переменные не будут изменяться?
-   */
   const year = date.getFullYear();
   const month = date.getMonth();
   const firstDate = new Date(year, month, 1);
@@ -73,10 +50,6 @@ const Calendar = props => {
       classNames: ''
     };
 
-    /**
-     * Крайне желательным даже в однострочных `if`-условиях является использование фигурных скобок.
-     * Так куда проще читать код.
-     */
     if (i <= 0 || i > lastDate.getDate()) {
       tempDate.classNames += ` ui-datepicker-other-month`;
     }
@@ -96,16 +69,16 @@ const Calendar = props => {
   return (
     <div className="ui-datepicker">
       <div className="ui-datepicker-material-header">
-        <div className="ui-datepicker-material-day">{days[date.getDay()]}</div>
+        <div className="ui-datepicker-material-day">{days[date.getDay()].full}</div>
         <div className="ui-datepicker-material-date">
           <div className="ui-datepicker-material-day-num">{date.getDate()}</div>
-          <div className="ui-datepicker-material-month">{monthsRelative[date.getMonth()]}</div>
+          <div className="ui-datepicker-material-month">{months[date.getMonth()].relative}</div>
           <div className="ui-datepicker-material-year">{date.getFullYear()}</div>
         </div>
       </div>
       <div className="ui-datepicker-header">
         <div className="ui-datepicker-title">
-          <span className="ui-datepicker-month">{months[date.getMonth()]}</span>&nbsp;<span className="ui-datepicker-year">{date.getFullYear()}</span>
+          <span className="ui-datepicker-month">{months[date.getMonth()].normal}</span>&nbsp;<span className="ui-datepicker-year">{date.getFullYear()}</span>
         </div>
       </div>
       <Dates dates={dates} />
@@ -113,40 +86,64 @@ const Calendar = props => {
   );
 };
 
+/**
+ * `colgroup` и `thead` можно вынести в отдельные компоненты,
+ * причём не описывать каждый элемент, а использовать генерацию, например, в цикле.
+ * Попробуешь?
+ */
 const Dates = props => (
   <table className="ui-datepicker-calendar">
-    <colgroup>
-      <col />
-      <col />
-      <col />
-      <col />
-      <col />
-      <col className="ui-datepicker-week-end"/>
-      <col className="ui-datepicker-week-end"/>
-    </colgroup>
-    <thead>
-    <tr>
-      <th scope="col" title="Понедельник">Пн</th>
-      <th scope="col" title="Вторник">Вт</th>
-      <th scope="col" title="Среда">Ср</th>
-      <th scope="col" title="Четверг">Чт</th>
-      <th scope="col" title="Пятница">Пт</th>
-      <th scope="col" title="Суббота">Сб</th>
-      <th scope="col" title="Воскресенье">Вс</th>
-    </tr>
-    </thead>
-    <tbody>
-    {
-      /**
-       * Если ты ничего не помещаешь вовнутрь элемента, то его лучше сделать, что называется, self-closing.
-       * Это касается не только `Week`, но и остальных компонентов.
-       */
-      props.dates.map(week => (
-        <Week dates={week} />
-      ))}
-    </tbody>
+    <ColGroup />
+    <TableHeader days={days} />
+    <TableBody dates={props.dates} />
   </table>
 );
+
+/**
+ * Был вариант сделать вместо map именно цикл (в функции), что-то типа
+ * (items => {
+ *   for (let i=0 ...) {
+ *     item.push(<col className={i>5?'ui-datepicker-week-end':''} />);
+ *   }
+ *   return items;
+ * })([])
+ * но такой вариант мне не понравился
+ */
+const ColGroup = props => (
+  <colgroup>
+    {ColGroupClasses.map(item => (
+        <col className={item} />
+    ))}
+  </colgroup>
+);
+
+/**
+ * Решил не делать новый массив (чтобы воскресенье было не первым), а дублирую приходящий
+ */
+const TableHeader = props => {
+  // console.log('test'); // эта строка вызывается дважды
+  let shortDays = props.days.map(item => item.short);
+  let tempDay = shortDays.shift();
+  shortDays.push(tempDay);
+  return (
+    <thead>
+    <tr>
+      {shortDays.map((item, index) => (
+          <th scope="col">{item}</th>
+      ))}
+    </tr>
+    </thead>
+  )
+};
+
+const TableBody = props => (
+  <tbody>
+    {props.dates.map(week => (
+      <Week dates={week} />
+    ))}
+  </tbody>
+);
+
 
 const Week = props => (
   <tr>
@@ -163,7 +160,7 @@ const Day = props => (
 /******************************
  * Не вносить изменния ниже
  ******************************/
-const now = new Date(2017, 6, 5);
+const now = new Date(2017, 5, 5);
 
 ReactDOM.render(
   <Calendar date={now} />,
