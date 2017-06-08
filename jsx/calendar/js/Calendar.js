@@ -10,6 +10,9 @@ const days = [
   {full: 'Пятница', short: 'Пт'},
   {full: 'Суббота', short: 'Сб'},
 ];
+const shortDays = days.map(item => item.short);
+const tempDay = shortDays.shift();
+shortDays.push(tempDay);
 
 const months = [
   {normal: 'Январь', relative: 'Января'},
@@ -122,9 +125,6 @@ const ColGroup = props => (
  */
 const TableHeader = props => {
   // console.log('test'); // эта строка вызывается дважды
-  let shortDays = props.days.map(item => item.short);
-  let tempDay = shortDays.shift();
-  shortDays.push(tempDay);
   return (
     <thead>
     <tr>
