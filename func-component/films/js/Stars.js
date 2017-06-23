@@ -1,9 +1,13 @@
 'use strict';
 
-function Stars(params) {
-    return <ul className="card-body-stars u-clearfix" title={params.count}><li title={params.count}>
-        {Array(params.count).fill().map(item => (
-            <Star />
-        ))}
-    </li></ul>;
-}
+const Stars = (params) => {
+  params.count = parseInt(params.count) || 1;
+  params.count = Math.max(params.count, 1);
+  params.count = Math.min(params.count, 5);
+  const numbers = (new Array(params.count)).fill();
+  return (
+    <ul className="card-body-stars u-clearfix" title={params.count}>
+      {numbers.map((item) => <li title={params.count}><Star /></li> )}
+    </ul>
+  );
+};
