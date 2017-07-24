@@ -25,8 +25,8 @@ const FeedbackForm = ({data, onSubmit}) => {
       <div className="contact-form__input-group" ref={e => salutationBlock = e}>
         <input className="contact-form__input contact-form__input--radio" id="salutation-mr" name="salutation" type="radio" value="Мистер" defaultChecked={data.salutation === "Мистер"}/>
         <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mr">Мистер</label>
-        <input className="contact-form__input contact-form__input--radio" id="salutation-mrs" name="salutation" type="radio" value="Миссис" defaultChecked={data.salutation === "Миссис"}/>
-        <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mrs">Миссис</label>
+        <input className="contact-form__input contact-form__input--radio" id="salutation-mrs" name="salutation" type="radio" value="Мисис" defaultChecked={data.salutation === "Мисис"}/>
+        <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-mrs">Мисис</label>
         <input className="contact-form__input contact-form__input--radio" id="salutation-ms" name="salutation" type="radio" value="Мисс" defaultChecked={data.salutation === "Мисс"}/>
         <label className="contact-form__label contact-form__label--radio" htmlFor="salutation-ms">Мисс</label>
       </div>
