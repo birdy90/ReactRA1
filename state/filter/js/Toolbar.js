@@ -1,24 +1,38 @@
 'use strict';
 
-const Toolbar = (props) => {
-  const { filters, selected, onSelectFilter } = props;
-  const renderFilters = (filters) => {
-    return filters.map((filter, i) => {
-      const className = filter === selected ? "filter-selected" : "filter";
+class Toolbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filters: props.filters,
+      selected: props.selected,
+      onSelectFilter: props.onSelectFilter
+    };
+  }
+
+  render(props) {
+    return (
+      <div className="toolbar">
+        {this.renderFilters()}
+      </div>
+    );
+  }
+
+  renderFilters = () => {
+    return this.state.filters.map((filter, i) => {
+      const className = filter === this.state.selected ? "filter-selected" : "filter";
       return (
         <button
           className={className}
-          onClick={() => onSelectFilter(filter)}
+          onClick={() => {
+            this.setState({selected: filter});
+            this.state.onSelectFilter(filter);
+          }}
           key={`filter-${i}`} >
-            {filter}
+          {filter}
         </button>
       );
     });
   };
+}
 
-  return (
-    <div className="toolbar">
-      {renderFilters(filters)}
-    </div>
-  );
-};
