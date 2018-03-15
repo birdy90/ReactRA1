@@ -1,5 +1,17 @@
 'use strict';
 
+const ExtractMonthHandler = Component => props => {
+  let newList = props.list.map(item => {
+    let date = new Date(Date.parse(item.date));
+    let locale = "en-us";
+    let month = date.toLocaleString(locale, { month: "short" });
+    return {...item, month: month};
+  });
+  return (
+    <Component list={newList} />
+  )
+};
+
 const MonthTable = props => {
 
     console.log('MonthTable', props);
@@ -22,3 +34,5 @@ const MonthTable = props => {
         </div>
     );
 };
+
+const MonthTableHandled = ExtractMonthHandler(MonthTable);

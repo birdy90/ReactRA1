@@ -17,8 +17,8 @@ class App extends React.Component {
     render() {
         return (
             <div id="app">
-                <MonthTable list={this.state.list} />
-                <YearTable list={this.state.list} />
+                <MonthTableHandled list={this.state.list} />
+                <YearTableHandled list={this.state.list} />
                 <SortTable list={this.state.list} />
             </div>
         );

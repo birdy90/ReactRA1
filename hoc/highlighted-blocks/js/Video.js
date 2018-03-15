@@ -1,4 +1,4 @@
-'use strict';
+'use strict'; 
 
 const Video = props => {
     return (
@@ -8,3 +8,5 @@ const Video = props => {
         </div>
     )
 };
+
+const WithPopularityVideo = WithPopularityHandler(Video);

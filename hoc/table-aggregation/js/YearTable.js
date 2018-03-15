@@ -1,5 +1,17 @@
 'use strict';
 
+const ExtractYearHandler = Component => props => {
+  let newList = props.list.map(item => {
+    let date = new Date(Date.parse(item.date));
+    let year = date.getFullYear();
+    return {...item, year: year};
+  });
+  return (
+    <Component list={newList} />
+  )
+};
+
+
 const YearTable = props => {
 
     console.log('YearTable', props);
@@ -22,3 +34,5 @@ const YearTable = props => {
         </div>
     );
 };
+
+const YearTableHandled = ExtractYearHandler(YearTable);

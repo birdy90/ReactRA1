@@ -8,3 +8,5 @@ const Article = props => {
         </div>
     )
 };
+
+const WithPopularityArticle = WithPopularityHandler(Article);
