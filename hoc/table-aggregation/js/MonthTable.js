@@ -12,6 +12,26 @@ const ExtractMonthHandler = Component => props => {
   )
 };
 
+const ExtractMonthHandler2 = (Component, selectData) => {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+    
+    render() {
+      let newList = this.props.list.map(item => {
+        let date = new Date(Date.parse(item.date));
+        let locale = "en-us";
+        let month = date.toLocaleString(locale, {month: "short"});
+        return {...item, month: month};
+      });
+      return (
+        <Component list={newList}/>
+      )
+    }
+  }
+};
+
 const MonthTable = props => {
 
     console.log('MonthTable', props);
@@ -35,4 +55,4 @@ const MonthTable = props => {
     );
 };
 
-const MonthTableHandled = ExtractMonthHandler(MonthTable);
+const MonthTableHandled = ExtractMonthHandler2(MonthTable);

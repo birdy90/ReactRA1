@@ -10,22 +10,30 @@ const Popular = props => (
   </div>
 );
 
-const WithPopularityHandler = (Component) => props => {
-  let content = null;
-  if (props.views < 100) {
-    content = (
-      <New>
-        <Component {...props} />
-      </New>
-    );
-  } else if (props.views >= 1000) {
-    content = (
-      <Popular>
-        <Component {...props} />
-      </Popular>
-    );
-  } else {
-    content = <Component {...props} />;
+const WithPopularityHandler = (Component) => {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+    
+    render() {
+      let content = null;
+      if (this.props.views < 100) {
+        content = (
+          <New>
+            <Component {...this.props} />
+          </New>
+        );
+      } else if (this.props.views >= 1000) {
+        content = (
+          <Popular>
+            <Component {...this.props} />
+          </Popular>
+        );
+      } else {
+        content = <Component {...this.props} />;
+      }
+      return content;
+    }
   }
-  return content;
 };

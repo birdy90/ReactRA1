@@ -11,6 +11,25 @@ const ExtractYearHandler = Component => props => {
   )
 };
 
+const ExtractYearHandler2 = (Component) => {
+  return class extends React.Component {
+    constructor(props) {
+      super(props);
+    }
+    
+    render() {
+      let newList = this.props.list.map(item => {
+        let date = new Date(Date.parse(item.date));
+        let year = date.getFullYear();
+        return {...item, year: year};
+      });
+      return (
+        <Component list={newList}/>
+      );
+    }
+  }
+};
+
 
 const YearTable = props => {
 
@@ -35,4 +54,4 @@ const YearTable = props => {
     );
 };
 
-const YearTableHandled = ExtractYearHandler(YearTable);
+const YearTableHandled = ExtractYearHandler2(YearTable);
